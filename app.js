@@ -70,16 +70,14 @@ app.get('/', (req, res) => {
     value: visitCount
   });
 
-  // ... reste du code
-});
-Ajouter la dépendance :
-
-{
+  {
   "dependencies": {
     "express": "^4.18.2",
     "applicationinsights": "^2.7.0"
   }
 }
+});
+
 
 
 
