@@ -71,7 +71,32 @@ jobs:
     environment:
       name: 'Staging'
       url: ${{ steps.deploy-to-staging.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: node-app
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BB2E8CEF7B454893B4FCC6755092EF9B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_51E79CA9F1FC4C40B446CE5EFF345C46 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_BB6253B68A174248A482F20B3CE0B9E0 }}
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'webapp-lab'
+          slot-name: 'staging'
+          package: .
+
+
+    
 
 
   
           
+
