@@ -47,3 +47,36 @@ app.get('/api/info', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
+const appInsights = require('applicationinsights');
+appInsights.setup();
+appInsights.start();
+
+// Compteur de visites
+let visitCount = 0;
+
+app.get('/', (req, res) => {
+  visitCount++;
+
+  // Télémétrie custom
+  appInsights.defaultClient.trackEvent({
+    name: 'PageView',
+    properties: { page: 'home', version: process.env.APP_VERSION }
+  });
+
+  appInsights.defaultClient.trackMetric({
+    name: 'VisitCount',
+    value: visitCount
+  });
+
+  // ... reste du code
+});
+Ajouter la dépendance :
+
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "applicationinsights": "^2.7.0"
+  }
+}
